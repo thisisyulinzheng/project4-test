@@ -20,7 +20,14 @@ class LinkedList {
         /* Default constructor*/
         LinkedList();
 
+        /*
+            A copy constructor
+            @param            :   Another LinkedList passed by reference
 
+            Initializes this LinkedList with the same items as the provided LinkedList
+        */
+        LinkedList(const LinkedList &list);
+         
         /* Destructor */
         ~LinkedList();
 
@@ -33,7 +40,7 @@ class LinkedList {
             @post     : Inserts item in  list at  position
 
         **/
-        bool insert(ItemType* item, const int &position);
+        bool insert(ItemType &item, const int &position);
 
 
 
@@ -77,9 +84,36 @@ class LinkedList {
         **/
         int getIndexOf(const ItemType &item) const;
 
+        /*
+            A reversed copy function
+            @param            :   Another LinkedList passed by reference
+
+            Sets the current LinkedList with the same items as the provided LinkedList
+            but in reverse order
+        */
+        void reverseCopy(const LinkedList<ItemType> &a_list);
+
+        bool moveItem(int &current_position, int &new_position);
+
+        /*
+            @param            :   A reference to an item
+            @return           :   Return true if item was moved to top, false otherwise
+            @post             :   Will move the item from its current position to the front
+                                of the list.
+                                For example, given the list 1 -> 3 -> 5 -> 6, moving 5 to the
+                                top of the list would result in 5 -> 1 -> 3 -> 6
+                                (recall that positions start at 0 and end at n-1).
+
+            You are encouraged to create your own helper functions for this endeavour.
+        */
+        bool moveItemToTop(ItemType &item);
+
         void viewNodes() const;
 
+        void updateList(Post* target_post, const std::string new_title, const std::string new_body);
 
+        bool removeFromList(ItemType* target_post);
+        
     private:
         /*
             @param   pos : the position of the item

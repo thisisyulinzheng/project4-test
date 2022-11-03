@@ -13,6 +13,7 @@ Description: This file defines the methods of the Network class.
 template<class ItemType>
 Network<ItemType>::Network() {
     num_of_accounts = 0;
+    feed_ = LinkedList<Post>();
 };
 
 /*
@@ -241,11 +242,52 @@ bool Network<ItemType>::authenticateFollow(ItemType &acct, const std::string use
                             in this Network.
 */
 template<class ItemType>
-bool Network<ItemType>::addToFeed(Post* post) {
-    std::string created_by = post->getUsername();
+bool Network<ItemType>::addToFeed(Post &post) {
+    std::string created_by = post.getUsername();
     if (getIndexOf(created_by) > -1) {
         feed_.insert(post, 0);
         return true;
     }
     return false;
+};
+
+template<class ItemType>
+void Network<ItemType>::printList() const {
+    feed_.viewNodes();
+}
+
+template<class ItemType>
+void Network<ItemType>::updateFeed(Post* target_post, const std::string new_title, const std::string new_body) {
+    feed_.updateList(target_post, new_title, new_body);
+};
+
+/*
+    @param            :   A string (word or phrase, case-sensitive) passed by reference
+    @return           :   The number of items removed from the list
+
+    @post              :  Any Post that contains the provided word or phrase in it's title,
+                            body or both is removed from the Network's `feed_` as well as
+                            the Account's `posts_`.
+
+    You are encouraged to create your own helper functions for this endeavour.
+    */
+template<class ItemType>
+int Network<ItemType>::removeIfContains(const std::string phrase) {
+    Node<Post>* current = feed_.getHeadPtr();
+    int num_removed = 0;
+    while (current != nullptr) {
+        std::string post_title = current->getItem()->getTitle();
+        std::string post_body = current->getItem()->getBody();
+        std::string target = ".*" + phrase + ".*";
+        std::regex e (target);
+        
+        if (std::regex_match(post_title, e) || std::regex_match(post_body, e)) {
+            //std::cout << current->getItem()->getUsername() << std::endl;
+            getAccountByIndex( getIndexOf(current->getItem()->getUsername()) )->removePost( current->getItem() );
+            feed_.removeFromList(current->getItem());
+            num_removed++;
+        }
+        current = current->getNext();
+    }
+    return num_removed;
 };

@@ -8,8 +8,8 @@ Description: This file defines the Network class of the project.
 #ifndef NETWORK_H_
 #define NETWORK_H_
 
-#include "Post.hpp"
 #include "LinkedList.hpp"
+#include "Post.hpp"
 #include <iostream>
 #include <vector>
 #include <fstream>
@@ -133,7 +133,7 @@ class Network {
             @post             :   Adds the post to its feed only if the Post was created by an Account
                                     in this Network.
         */
-        bool addToFeed(Post* new_post);
+        bool addToFeed(Post &new_post);
 
         /**
             Accessor function
@@ -141,6 +141,21 @@ class Network {
             @return             :  account from the index
         */
         ItemType* getAccountByIndex(const int index);
+     
+        void printList() const;
+
+        void updateFeed(Post* target_post, const std::string new_title, const std::string new_body); 
+        /*
+          @param            :   A string (word or phrase, case-sensitive) passed by reference
+          @return           :   The number of items removed from the list
+
+          @post              :  Any Post that contains the provided word or phrase in it's title,
+                                   body or both is removed from the Network's `feed_` as well as
+                                   the Account's `posts_`.
+
+          You are encouraged to create your own helper functions for this endeavour.
+          */
+        int removeIfContains(const std::string phrase);
 
     private:
         /*
@@ -153,7 +168,9 @@ class Network {
 
         ItemType* account_arr[200]; // An array (with a capacity of 200) that stores POINTERS to the template items.
         int num_of_accounts; // An array (with a capacity of 200) that stores POINTERS to the template items.
-        LinkedList<Post> feed_;
+        //std::vector<Post> posts_made; // A vector of Posts: the Network's feed where all posts posted by accounts in the network will be stored.
+        LinkedList<Post> feed_;   
+
 };
 
 #include "Network.cpp"

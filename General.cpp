@@ -1,83 +1,80 @@
-/****************************************************************************************************************************
-Title         :   General.cpp
-Author        :   Dream Team
-Description   :   implementation for the General class
-****************************************************************************************************************************/
-
-
-
+/*
+Author: Yulin Zheng
+Date: September 20, 2022
+File Title: General.cpp
+Description: This file defines the methods of the General class. 
+*/
 
 #include "General.hpp"
-
-
+#include <string>
+#include <iostream>
 
 /**
-   Parameterized constructor.
-     @param    : The name of the General post (a string)
-     @param    : The body of the General post (a string)
-     @param    : : The username of the Account that added this post (a string)
+ Parameterized constructor.
+@param    : The name of the General post (a string)
+@param    : The body of the General post (a string)
+@param    : : The username of the Account that added this post (a string)
 
-     @post     : Sets the title, body and username to the value of the parameters.
-                 It will also generate the current time and store it
-                 and it initializes the array with default values
+@post     : Sets the title, body and username to the value of the parameters.
+            It will also generate the current time and store it
+            and it initializes the array with default values
 */
-General::General(std::string name, std::string description, std::string username):Post(name, description, username){
-    for(int i = 0; i <= 5 ; i++){
-        reactions_[i] = 0;
-    }
-}
-
-
+General::General(const std::string post_title, const std::string post_body, const std::string username)
+:Post(post_title, post_body, username) 
+{
+     for (int i = 0; i < 6; i++) {
+          reactions_arr[i] = 0;
+     }
+};
 
 /**
-   Mutator function to add a reaction
-   @param    : A reference to reaction (represented by a value of type Reaction)
-   @return   : return True if the react to the post is successful or false
-               if the reaction provided is not within a valid Reaction value.
+     Mutator function to add a reaction
+    @param    : A reference to reaction (represented by a value of type Reaction)
+    @return   : return True if the react to the post is successful or false
+                if the reaction provided is not within a valid Reaction value.
 
-   @post     : Increments the array at the index corresponding to the input Reaction
+    @post     : Increments the array at the index corresponding to the input Reaction
 */
-bool General::reactToPost(const Reactions& reaction){
-    if (reaction < 6) {
-        reactions_[reaction] += 1;
-
-        return true;
-    }
-    return false;
-}
-
+bool General::reactToPost(const Reactions reaction_type) {
+     for (int i = 0; i < 6; i++) {
+          if (i == reaction_type) {
+               reactions_arr[i] += 1;
+               return true;
+          }
+     }
+     return false;
+};
 
 /**
-   @post     : Prints the reaction to the post in this format (example):
-               Like : 2 | Dislike : 0 | Laugh : 4 | Wow : 2 | Sad : 1 |  Angry : 5
+     @post     : Prints the reaction to the post in this format (example):
+                Like : 2 | Dislike : 0 | Laugh : 4 | Wow : 2 | Sad : 1 |  Angry : 5
 */
 void General::getReactions() const {
-    std::vector<std::string> temp;
-    temp.push_back("Like");
-    temp.push_back("Dislike");
-    temp.push_back("Laugh");
-    temp.push_back("Wow");
-    temp.push_back("Sad");
-    temp.push_back("Angry");
-    for(int i = 0; i < 5 ; i++) {
-        std::cout << temp[i] << " : " << reactions_[i] << " | ";
-    }
-    std::cout << temp[5] << " : " << reactions_[5] << std::endl;
-}
-
+     std::cout 
+     << "Like : " << reactions_arr[LIKE] 
+     << " | Dislike : " << reactions_arr[DISLIKE]  
+     << " | Laugh : " << reactions_arr[LAUGH]  
+     << " | Wow : " << reactions_arr[WOW]  
+     << " | Sad : " << reactions_arr[SAD]  
+     << " |  Angry : " << reactions_arr[ANGRY] 
+     << std::endl;
+};
 
 /**
-    @post     : Display Function in the following format:
-    \n
-    {post_title_} at {time_stamp_}:
-    {post_body_}
-    \n
-    Like : {reactions_[0]} |  Dislike : {reactions_[1]} | Laugh : {reactions_[0]} | ...
-    \n
+     @post     : Displays the General post (example):
+                \n
+                {post_title_} at {time_stamp_}:
+                {post_body_}
+                \n
+                Like : 2 | Dislike : 0 | Laugh : 4 | Wow : 2 | Sad : 1 |  Angry : 5
+                \n
 */
-void General::displayPost() const{
-    std::cout << '\n' << getTitle() << " at ";
-    getTimeStamp();
-    std::cout << getBody() << std::endl;
-    getReactions();
- }
+void General::displayPost() const {
+     std::cout << std::endl;
+     
+     std::cout << getTitle() << " at ";
+     getTimeStamp();
+     std::cout << getBody() << std::endl;
+
+     getReactions();
+}; 
