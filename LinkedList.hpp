@@ -33,7 +33,7 @@ class LinkedList {
             @post     : Inserts item in  list at  position
 
         **/
-        bool insert(ItemType &item, const int &position);
+        bool insert(ItemType* item, const int &position);
 
 
 

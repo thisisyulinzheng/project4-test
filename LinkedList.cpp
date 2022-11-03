@@ -66,7 +66,7 @@ void LinkedList<ItemType>::clear() {
 
 **/
 template<typename ItemType>
-bool LinkedList<ItemType>::insert(ItemType& item, const int &position){
+bool LinkedList<ItemType>::insert(ItemType* item, const int &position){
     if((position < 0 || position > size_)){
         return false;
     }

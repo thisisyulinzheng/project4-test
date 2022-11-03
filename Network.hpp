@@ -133,7 +133,7 @@ class Network {
             @post             :   Adds the post to its feed only if the Post was created by an Account
                                     in this Network.
         */
-        bool addToFeed(Post &new_post);
+        bool addToFeed(Post* new_post);
 
         /**
             Accessor function
